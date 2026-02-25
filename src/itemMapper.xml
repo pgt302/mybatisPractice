@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org..DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 상품정보에 관한 SQL --><!-- mapper태그 안에 작성 -->
+<!-- <mapper namespace = "dao.Mapper(인터페이스)" -->
+<mapper namespace = "dao.ItemMapper">
+<!-- 상품 등록 -->
+<insert id="insertItem" parameterType="item">
+	INSERT INTO ITEM_TABLE(ITEM_ID, ITEM_NAME, ITEM_PRICE)
+	VALUES (ITEM_SEQ.NEXTVAL, #{itemName}, #{itemPrice})
+</insert>
+
+<!-- 상품 전체보기 -->
+<select id="findAllItems" resultType="item">
+	SELECT
+		ITEM_ID AS itemSeq,
+		ITEM_NAME AS itemName,
+		ITEM_PRICE AS itemPrice
+	FROM
+		ITEM_TABLE
+	ORDER BY
+		ITEM_ID ASC
+</select>
+
+<!-- 상품 검색(1) : 번호로 찾기 -->
+<select id="findItemByItemSeq" parameterType="int" resultType="item">
+	SELECT
+		ITEM_ID AS itemSeq,
+		ITEM_NAME AS itemName,
+		ITEM_PRICE AS itemPrice
+	FROM
+		ITEM_TABLE
+	WHERE
+		ITEM_ID = #{itemSeq}
+</select>
+
+<!-- 상품 검색(2) : 이름으로 찾기 -->
+<select id="findItemsByItemName" parameterType="string" resultType="item">
+	SELECT
+		ITEM_ID AS itemSeq,
+		ITEM_NAME AS itemName,
+		ITEM_PRICE AS itemPrice
+	FROM
+		ITEM_TABLE
+	WHERE
+		<!-- ITEM_NAME = #{itemName} --><!-- 완전 일치 -->
+		ITEM_NAME LIKE '%'||#{itemName}||'%' <!-- 부분 일치 -->
+</select>
+
+<!-- 상품 정보 수정 -->
+<update id="updateItemInfo" parameterType="item">
+	UPDATE ITEM_TABLE
+	SET ITEM_NAME = #{itemName}, ITEM_PRICE = #{itemPrice}
+	WHERE ITEM_ID = #{itemSeq}
+</update>
+
+<!-- 상품 정보 삭제 -->
+<delete id="deleteItemInfo" parameterType="int">
+	DELETE FROM ITEM_TABLE
+	WHERE ITEM_ID = #{itemSeq}
+</delete>
+</mapper>
