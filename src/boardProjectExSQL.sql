@@ -54,4 +54,9 @@ BEGIN
 END $$
 DELIMITER ;
 
--- 시퀀스
+-- 시퀀스 초기설정
+Call create_sequence("board_seq");
+
+UPDATE sequences
+SET currval = 202600001
+WHERE name = "board_seq";
